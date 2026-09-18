@@ -9,29 +9,98 @@ body {
     flex-direction: column;
 }
 
-.modal {
-    /*display:none;
-    position:absolute;*/
-    display:block;
+/*----------------------------------------------------------------------*/
+/* TICKET LIST */
+.list-widget {
+    margin:20px 0;
+}
+.list-table {
+    border: 1px solid black;
+    margin:0;
+    width: 100%; 
+}
+.list-table tr {
+  box-shadow: inset 0 1px 0 black;
+}
+.list-table tr:first-child {
+  box-shadow: none;
+}
+.list-table td {
+   padding: 10px;
+   cursor: default;
+   height:0;
+}
+.ticket td {
+    vertical-align: baseline;
+    height:0;
+}
+.ticket-description {
+    padding: 10px 0;
+    display:none;
 }
 
+
+/*----------------------------------------------------------------------*/
+/* TICKET LIST ACTIONS */
+.action {
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius:50%;
+    width:25px;
+    height:25px;
+    text-align: center;
+    vertical-align: middle;
+    line-height:25px;
+}
+
+/*----------------------------------------------------------------------*/
+/* FORMS */
+/* ANY FORM */
+.modal {
+    display:none;
+    position:absolute;
+    top: 200px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
 .modal-widget {
     display: flex;
     flex-direction: column;
     border: 1px solid black;
     border-radius:10px;
-    max-width: 300px;
+    max-width: 400px;
+    width:400px;
     padding:20px;
+    background-color: #fff;
+}
+.controls {
+    display:flex;
+    flex-direction: row;
+    justify-content: end;
+}
+.button {
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius:10px;
+    height:30px;
+    text-align: center;
+    line-height:30px;
+    padding: 5px 10px;
+    margin:0 10px;
+}
+.button:last-child {
+    margin:0;
 }
 
+/* DELETE FORM */
 .delete-details {
     margin:0 0 20px 0;
 }
+/* EDIT FORM */
 .edit-form {
     display: flex;
     flex-direction: column;
 }
-
 .edit-form input {
     margin:0 0 10px 0;
     padding:10px;
@@ -45,61 +114,8 @@ body {
 .edit-form label {
     margin:0 0 5px 0;
 }
-
 .form-title {
     margin:0 0 20px 0;
     text-align: center;
 }
 
-.list-widget {
-    margin:20px 0;
-}
-
-.list-table {
-    border: 1px solid black;
-    margin:0;
-    width: 100%; 
-}
-
-.list-table tr {
-  box-shadow: inset 0 1px 0 black;
-}
-.list-table tr:first-child {
-  box-shadow: none;
-}
-.list-table td {
-   padding: 10px;
-   cursor: default;
-}
-
-.action {
-    cursor: pointer;
-    border: 1px solid black;
-    border-radius:50%;
-    width:25px;
-    height:25px;
-    text-align: center;
-    vertical-align: baseline;
-    line-height:25px;
-}
-
-.controls {
-    display:flex;
-    flex-direction: row;
-    justify-content: end;
-}
-
-.button {
-    cursor: pointer;
-    border: 1px solid black;
-    border-radius:10px;
-    height:30px;
-    text-align: center;
-    line-height:30px;
-    padding: 5px 10px;
-    margin:0 10px;
-}
-
-.button:last-child {
-    margin:0;
-}

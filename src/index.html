@@ -21,7 +21,7 @@
     <div class="modal">
         <div class="modal-widget edit-widget">
             <div class="form-title">Добавить тикет</div>
-            <form class="edit-form">
+            <form class="edit-form" id="edit-form">
                 <label>Краткое описание</label>
                 <input type="text" name="short-description">
                 <label>Подробное описание</label>
@@ -38,6 +38,7 @@
         <div class="modal-widget delete-widget">
             <div class="form-title">Удалить тикет</div>
             <form class="delete-form">
+                <div class="delete-details delete-data"></div>
                 <div class="delete-details">Вы уверены, что хотите удалить тикет? Это действие необратимо.</div>
                 <div class="controls">
                     <div class="button button-cancel">Отмена</div>
