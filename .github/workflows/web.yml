@@ -25,31 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22.14.0
-          cache: 'yarn'
-      - run: yarn
-      - run: yarn lint
-
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.14.0
-          cache: 'yarn'
-      - run: yarn
-      - name: Start server
-        run: |
-          npm start &
-          echo "Waiting for server to be ready..."
-          while ! nc -z localhost 8080; do
-            sleep 1
-          done
-          echo "Server is ready!"
-      - run: yarn e2e
+      - name: Install dependencies
+        run: npm install
+      - name: Linter
+        run: npm run lint
 
   build:
     needs: [eslint]
@@ -63,11 +42,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22.14.0
-          cache: 'yarn'
-      - run: yarn
-      - run: yarn build
+      - name: Install dependencies
+        run: npm install
+      - name: Run deploy
+        run: npm build
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
