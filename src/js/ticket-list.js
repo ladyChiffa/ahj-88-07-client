@@ -1,4 +1,6 @@
 import loadingIcon from '../img/spinner.svg';
+import config from '../config/config.json';
+
 export default class TicketList {
 
     constructor(widget) {
@@ -20,7 +22,6 @@ export default class TicketList {
                 this.toggleDetails (element);
                 return;
             }
-            console.log(action.dataset.type);
             switch (action.dataset.type) {
                 case 'status': 
                     this.toggleStatus (element);
@@ -89,8 +90,7 @@ export default class TicketList {
                 this.loadData();
             }
         });
-        xhr.open('GET', 'http://localhost:7070/?method=deleteById&id=' + this._deleteTicket.id);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.open('GET', config.hostURI + '/?method=deleteById&id=' + this._deleteTicket.id);
         xhr.send();
     }
 
@@ -138,7 +138,7 @@ export default class TicketList {
                 this.loadData();
             }
         });
-        xhr.open('POST', 'http://localhost:7070/?' + methodURL );
+        xhr.open('POST', config.hostURI + '/?' + methodURL );
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(body);
     }
@@ -153,11 +153,10 @@ export default class TicketList {
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', () => {
             if (xhr.status >= 200 && xhr.status < 300) {
-                console.log(xhr.responseText)
                 try {
                     const data = JSON.parse(xhr.responseText);
 
-                    if (data.description != "") {
+                    if (data.description && data.description != "") {
                         fillElement.innerHTML = data.description;
                         fillElement.style.display = fillElement.style.display != 'block' ? 'block' : 'none';
                     }
@@ -166,31 +165,27 @@ export default class TicketList {
                 }
             }
         });
-        xhr.open('GET', 'http://localhost:7070/?method=ticketById&id=' + ticketElement.id);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.open('GET', config.hostURI + '/?method=ticketById&id=' + ticketElement.id);
         xhr.send();
     }
     
     toggleStatus (ticketElement) {
         const ticket = this._data.find( elem => elem.id == ticketElement.id );
-        console.log(ticket);
         ticket.status = !ticket.status;
-        console.log(this._data);
 
         const body = JSON.stringify(ticket);
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', () => {
             if (xhr.status >= 200 && xhr.status < 300) {
-                console.log(xhr.responseText)
                 try {
                     this._data = JSON.parse(xhr.responseText);
+                    this.renderData();
                 } catch (e) {
                     console.error(e);
                 }
-                this.renderData();
             }
         });
-        xhr.open('POST', 'http://localhost:7070/?method=updateById&id=' + ticketElement.id);
+        xhr.open('POST', config.hostURI + '/?method=updateById&id=' + ticketElement.id);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(body);
     }
@@ -211,6 +206,7 @@ export default class TicketList {
     setProgressOff() {
         if(this._loadingOn) {
             this._status.removeChild(this._loading);
+            this._loadingOn = false;
         }
     }
 
@@ -222,37 +218,41 @@ export default class TicketList {
             if (xhr.status >= 200 && xhr.status < 300) {
                 try {
                     this._data = JSON.parse(xhr.responseText);
+                    this.renderData();
                 } catch (e) {
                     console.error(e);
                 }
+                this.setProgressOff();
             }
-            this.renderData();
-            this.setProgressOff();
         });
         xhr.addEventListener('error', (e) => {
             console.error(e);
+            this._widget.innerHTML = "<b>Ошибка сервера</b><br>" + e;
             this.setProgressOff();
         });
 
-        xhr.open('GET', 'http://localhost:7070/?method=allTickets');
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.open('GET', config.hostURI + '/?method=allTickets');
         xhr.send();
     }
 
     renderData() {
         this._tablebody.innerHTML = '';
         this._data.forEach((ticket) => {
-            const dateString = new Date(ticket.created).toLocaleString();
-            const status = ticket.status ? this.STATUS_DONE : '-';
-            this._tablebody.innerHTML += `<tr id="${ticket.id}" class="ticket">
-                                        <td><div class="action" data-type="status">${status}</div></td>
-                                        <td><div>${ticket.name}</div><div class="ticket-description"></div></td>
-                                        <td>${dateString}</td>
-                                        <td><div class="action" data-type="edit">&#x270E;</div></td>
-                                        <td><div class="action" data-type="delete">&#10006;</div></td>
-                                        </tr>`;
+            const dateString = new Date(ticket.created).toLocaleString('ru-RU');
+            const status = ticket.status ? this.STATUS_DONE : '';
+
+            const ticketRow = document.createElement('tr');
+            ticketRow.id = ticket.id;
+            ticketRow.classList.add('ticket');
+            ticketRow.innerHTML = `<td><div class="action" data-type="status">${status}</div></td>
+                                   <td><div></div><div class="ticket-description"></div></td>
+                                   <td>${dateString}</td>
+                                   <td><div class="action" data-type="edit">&#x270E;</div></td>
+                                   <td><div class="action" data-type="delete">&#10006;</div></td>`;
+            ticketRow.children[1].children[0].textContent = ticket.name;
+
+            this._tablebody.appendChild(ticketRow);
         });
-    
     }
 
 }
