@@ -11,10 +11,10 @@ body {
 
 /*----------------------------------------------------------------------*/
 /* TICKET LIST */
-.list-widget {
+.ticket__widget {
     margin:20px 0;
 }
-.list-table {
+.ticket__widget-table {
     border: 1px solid black;
     margin:0;
     width: 100%; 
@@ -31,7 +31,7 @@ body {
    height:0;
 }
 .ticket td {
-    vertical-align: baseline;
+    vertical-align: top;
     height:0;
 }
 .ticket-description {
