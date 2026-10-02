@@ -1,23 +1,36 @@
 import TicketAPI from "../api/TicketAPI";
 
 export default class TicketRepository {
-  constructor() {
+  constructor(errorCallback) {
     this.api = new TicketAPI();
+    this.errorCallback = errorCallback;
     this.data = [];
   }
 
   async load() {
     const result = await this.api.loadTaskList();
-    this.data = result;
+    if (result.status == 'error') {
+      this.data = [];
+      this.errorCallback(result);
+    }
+    else {
+      this.data = result;
+    }
   }
 
   async requestTicket(id) {
     const result = await this.api.loadTicket(id);
+    if(result.status == 'error') {
+      this.errorCallback(result);
+    }
     return result;
   }
 
   getTicket(id) {
     const result = this.data.find(ticket => ticket.id == id);
+    if(result.status == 'error') {
+      this.errorCallback(result);
+    }
     return result;
   }
 
@@ -26,23 +39,43 @@ export default class TicketRepository {
     ticket.status = !ticket.status;
 
     const result = await this.api.updateTicket(ticket);
-    this.data = result;
+    if (result.status == 'error') {
+      this.data = [];
+      this.errorCallback(result);
+    }
+    else {
+      this.data = result;
+    }
   }
 
   async createTicket(ticket) {
     const result = await this.api.createTicket(ticket);
-    this.data.push(result);
+    if (result.status == 'error') {
+      this.errorCallback(result);
+    }
+    else {
+      this.data.push(result);
+    }
   }
 
   async updateTicket(ticket) {
     const result = await this.api.updateTicket(ticket);
-    this.data = result;
+    if (result.status == 'error') {
+      this.data = [];
+      this.errorCallback(result);
+    }
+    else {
+      this.data = result;
+    }
   }
 
   async deleteTicket(ticket) {
     const result = await this.api.deleteTicket(ticket);
     if (result.status == 'ok') {
       this.data = this.data.filter(elem => elem.id != ticket.id);
+    }
+    else {
+      this.errorCallback(result);
     }
   }
 }

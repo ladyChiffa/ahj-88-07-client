@@ -38,7 +38,7 @@ export default class TicketDelete {
 
     this._details.innerHTML = '<b>Тикет:</b> ' + this._deleteTicket.name;
 
-    this.formWidget.style.display = 'block';
+    this.formWidget.classList.add('modal-open');
     if(!this.formWidgetOpened) {
       this.formWidgetOpened = !this.formWidgetOpened;
       this.container.appendChild(this.formWidget);
@@ -46,7 +46,7 @@ export default class TicketDelete {
   }
 
   close () {
-    this.formWidget.style.display = 'none';
+    this.formWidget.classList.remove('modal-open');
   }
 
   submit () {

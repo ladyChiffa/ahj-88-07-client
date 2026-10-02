@@ -63,6 +63,9 @@ body {
     left: 50%;
     transform: translate(-50%, 0);
 }
+.modal.modal-open {
+    display:block;
+}
 .modal-widget {
     display: flex;
     flex-direction: column;
@@ -117,5 +120,24 @@ body {
 .form-title {
     margin:0 0 20px 0;
     text-align: center;
+}
+
+.spinner {
+  position: fixed;
+  margin-left: -100px;
+  top:50%;
+  left:50%;
+  margin-top:-100px;
+}
+
+.error {
+  position: fixed;
+  width:200px;
+  margin-left: -100px;
+  top:50%;
+  left:50%;
+  margin-top:-100px;
+  color:red;
+  font-weight:bold;
 }
 

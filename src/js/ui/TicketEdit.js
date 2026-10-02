@@ -47,7 +47,7 @@ export default class TicketEdit {
       this._title.innerText = 'Добавить тикет';
     }
 
-    this.formWidget.style.display = 'block';
+    this.formWidget.classList.add('modal-open');
     if(!this.formWidgetOpened) {
       this.formWidgetOpened = !this.formWidgetOpened;
       this.container.appendChild(this.formWidget);
@@ -55,7 +55,7 @@ export default class TicketEdit {
   }
 
   close () {
-    this.formWidget.style.display = 'none';
+    this.formWidget.classList.remove('modal-open');
   }
 
   submit () {
